@@ -1,11 +1,22 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
-// Crea el contexto
+
 const UserContext = createContext();
 
-// Proveedor del contexto
+
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")) || null);
+
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user"); // Limpia el localStorage si no hay usuario
+    }
+  }, [user]);
+  
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -14,5 +25,5 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-// Hook para usar el contexto
+
 export const useUser = () => useContext(UserContext);

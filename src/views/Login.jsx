@@ -37,6 +37,7 @@ export const Login = () => {
       // Guarda el token en localStorage
       localStorage.setItem("token", data.token);
 
+      
    
       Swal.fire({
         icon: "success",

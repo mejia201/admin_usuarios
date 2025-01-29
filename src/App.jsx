@@ -4,6 +4,8 @@ import { Home } from "./views/Home";
 import { Login } from "./views/Login";
 import { Users } from "./views/Users";
 import { Register } from "./views/Register";
+import { Stadistics } from "./views/Stadistics";
+
 import { NotFound } from "./views/NotFound";
 import { UserProvider } from "./components/context/UserContext"; 
 
@@ -18,6 +20,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/stadistics" element={<Stadistics />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
