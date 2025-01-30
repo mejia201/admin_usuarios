@@ -3,8 +3,8 @@ import React from 'react';
 export const NotFound = () => {
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>¡Vaya! Página no encontrada.</h1>
-      <p style={styles.message}>Lo sentimos, la página que buscas no existe.</p>
+      <h1 style={styles.title}>Oops, page not found.</h1>
+      <p style={styles.message}>Sorry, the page you are looking for does not exist.</p>
       <img
         src="https://media.giphy.com/media/3o7bu3Xkf5zJKQIvg8/giphy.gif"
         alt="Page not found"

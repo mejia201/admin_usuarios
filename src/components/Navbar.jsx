@@ -22,8 +22,8 @@ export const Navbar = ({ setShowModal }) => {
       if (response.ok) {
        
         Swal.fire({
-          title: 'Sesión cerrada',
-          text: 'Has cerrado sesión exitosamente.',
+          title: 'Session closed',
+          text: 'You have successfully logged out.',
           icon: 'success',
           confirmButtonText: 'OK',
         }).then(() => {
@@ -32,13 +32,13 @@ export const Navbar = ({ setShowModal }) => {
           navigate('/login');
         });
       } else {
-        throw new Error('Error al cerrar sesión');
+        throw new Error('Error');
       }
     } catch (error) {
       // Manejar errores y notificar al usuario
       Swal.fire({
         title: 'Error',
-        text: 'Hubo un problema al cerrar sesión. Intenta nuevamente.',
+        text: 'There was a problem logging out. Please try again.',
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -49,12 +49,12 @@ export const Navbar = ({ setShowModal }) => {
   const handleDeleteAccount = async () => {
   
     const result = await Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción no se puede deshacer. Tu cuenta será eliminada permanentemente.',
+      title: '¿Are you sure?',
+      text: 'This action cannot be undone. Your account will be permanently deleted.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar cuenta',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Yes, delete account',
+      cancelButtonText: 'Cancel',
     });
   
     if (result.isConfirmed) {
@@ -70,24 +70,23 @@ export const Navbar = ({ setShowModal }) => {
   
         if (response.ok) {
           Swal.fire({
-            title: 'Cuenta eliminada',
-            text: 'Tu cuenta ha sido eliminada exitosamente.',
+            title: 'Account deleted',
+            text: 'Your account has been successfully deleted.',
             icon: 'success',
             confirmButtonText: 'OK',
           }).then(() => {
             // Limpiar el token, el estado del usuario y redirigir al login
             localStorage.removeItem('token');
             setUser(null); 
-            console.log("Redirigiendo al login...");
             navigate('/login');
           });
         } else {
-          throw new Error('Error al eliminar la cuenta');
+          throw new Error('Error deleting account');
         }
       } catch (error) {
         Swal.fire({
           title: 'Error',
-          text: 'Hubo un problema al eliminar tu cuenta. Intenta nuevamente.',
+          text: 'There was a problem deleting your account. Please try again.',
           icon: 'error',
           confirmButtonText: 'OK',
         });
@@ -95,8 +94,8 @@ export const Navbar = ({ setShowModal }) => {
     } else {
       // Si el usuario cancela la acción
       Swal.fire({
-        title: 'Cancelado',
-        text: 'Tu cuenta no ha sido eliminada.',
+        title: 'Cancelled',
+        text: 'Your account has not been deleted.',
         icon: 'info',
         confirmButtonText: 'OK',
       });
@@ -105,13 +104,13 @@ export const Navbar = ({ setShowModal }) => {
   
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "#e3f2fd" }}>
+    <nav className="navbar navbar-expand-lg shadow-sm" style={{ backgroundColor: "#1976D2", padding: "10px 20px" }}>
       <div className="container-fluid">
-        <a className="navbar-brand" href="/home">
-          Home
+        <a className="navbar-brand text-white fw-bold" href="/home">
+          <i className="bi bi-house-door-fill"></i> Home
         </a>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler border-0"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -124,41 +123,35 @@ export const Navbar = ({ setShowModal }) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/stadistics">
-                Estadísticas
+              <a className="nav-link text-white" href="/stadistics">
+                <i className="bi bi-bar-chart-fill"></i> Statistics
               </a>
             </li>
             <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle text-white fw-bold"
                 href="#"
                 id="userMenu"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {user?.name || "Usuario"}
+                <i className="bi bi-person-circle"></i> {user?.name || "Usuario"}
               </a>
-              <ul
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="userMenu"
-              >
+              <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Editar Perfil
+                  <button className="dropdown-item" onClick={() => setShowModal(true)}>
+                    <i className="bi bi-pencil-square"></i> Edit profile
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item" onClick={handleLogout}>
-                    Cerrar Sesión
+                  <button className="dropdown-item text-danger" onClick={handleLogout}>
+                    <i className="bi bi-box-arrow-right"></i> Logout
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item" onClick={handleDeleteAccount}>
-                    Eliminar Cuenta
+                  <button className="dropdown-item text-danger" onClick={handleDeleteAccount}>
+                    <i className="bi bi-trash-fill"></i> Delete your account
                   </button>
                 </li>
               </ul>

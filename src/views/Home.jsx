@@ -1,20 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../components/context/UserContext";
 import { Navbar } from "../components/Navbar";
 import Swal from "sweetalert2";
 
 export const Home = () => {
-  const { user, setUser } = useUser(); 
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     password: "",
   });
 
+  useEffect(() => {
+    if (!user) return;
+
+    let logoutTimer;
+
+    const resetTimer = () => {
+      clearTimeout(logoutTimer);
+      logoutTimer = setTimeout(() => {
+        localStorage.removeItem("token");
+        setUser(null);
+        Swal.fire("Session closed", "Your session timed out due to inactivity", "warning");
+        navigate("/login");
+      }, 5 * 60 * 1000); // 5 minutos
+    };
+
+    resetTimer();
+
+    window.addEventListener("mousemove", resetTimer);
+    window.addEventListener("keydown", resetTimer);
+    window.addEventListener("click", resetTimer);
+
+    return () => {
+      clearTimeout(logoutTimer);
+      window.removeEventListener("mousemove", resetTimer);
+      window.removeEventListener("keydown", resetTimer);
+      window.removeEventListener("click", resetTimer);
+    };
+  }, [user, navigate, setUser]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,10 +51,8 @@ export const Home = () => {
 
   const handleUpdateUser = async () => {
     try {
-
       const updatedData = { ...formData };
 
-      // Si el password está vacío, lo eliminamos del objeto
       if (!updatedData.password) {
         delete updatedData.password;
       }
@@ -34,40 +60,45 @@ export const Home = () => {
       const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
         method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(updatedData),
-        credentials: "include"
+        credentials: "include",
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
-        throw new Error(data.message || "Error al actualizar usuario");
+        throw new Error(data.message || "Error updating user");
       }
-  
-      Swal.fire("¡Éxito!", "Usuario actualizado correctamente", "success");
+
+      Swal.fire("¡Éxito!", "User successfully updated", "success");
       setUser(data.data);
       setShowModal(false);
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
   };
-  
-  
-  
-  
+
   return (
     <>
       {/* Navbar */}
       <Navbar setShowModal={setShowModal} />
 
       {/* Main content */}
-      <div className="container mt-5">
-        <h1>Bienvenido, {user?.name || "Usuario"}!</h1>
-        <p>Correo: {user?.email}</p>
+      <div className="container text-center mt-5">
+        <h1>Welcome, {user?.name || "Usuario"}!</h1>
+        <p>Email: {user?.email}</p>
+
+        <img 
+          src="https://media.giphy.com/media/xUPGcyi4YxcZp8dWZq/giphy.gif" 
+          alt="Welcome GIF" 
+          className="img-fluid mt-3"
+          style={{ maxWidth: "400px", borderRadius: "10px" }} 
+        />
+
       </div>
 
       {/* Modal para editar el usuario */}
@@ -76,7 +107,7 @@ export const Home = () => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Editar Perfil</h5>
+                <h5 className="modal-title">Edit profile</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -85,7 +116,7 @@ export const Home = () => {
               </div>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label">Nombre</label>
+                  <label className="form-label">Name</label>
                   <input
                     type="text"
                     className="form-control"
@@ -95,7 +126,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Correo</label>
+                  <label className="form-label">Email</label>
                   <input
                     type="email"
                     className="form-control"
@@ -105,12 +136,12 @@ export const Home = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Contraseña</label>
+                  <label className="form-label">Password</label>
                   <input
                     type="password"
                     className="form-control"
                     name="password"
-                    placeholder="Nueva contraseña (opcional)"
+                    placeholder="New password (opcional)"
                     onChange={handleInputChange}
                   />
                 </div>
@@ -121,14 +152,14 @@ export const Home = () => {
                   className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
-                  Cancelar
+                  Cancel
                 </button>
                 <button
                   type="button"
                   className="btn btn-primary"
                   onClick={handleUpdateUser}
                 >
-                  Guardar Cambios
+                  Save Changes
                 </button>
               </div>
             </div>

@@ -41,8 +41,8 @@ export const Login = () => {
    
       Swal.fire({
         icon: "success",
-        title: "Inicio de sesión exitoso",
-        text: "Bienvenido al sistema.",
+        title: "Successful login",
+        text: "Welcome to the app.",
       });
 
       navigate("/home");
@@ -60,9 +60,25 @@ export const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4">Login</h3>
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{
+        background: "linear-gradient(135deg, #6e8efb, #a777e3)",
+        height: "100vh",
+      }}
+    >
+      <div
+        className="card p-4 shadow-lg"
+        style={{
+          width: "400px",
+          borderRadius: "15px",
+          background: "#fff",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <h3 className="text-center mb-4" style={{ color: "#6e8efb" }}>
+          Login
+        </h3>
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -75,6 +91,7 @@ export const Login = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{ borderRadius: "8px" }}
             />
           </div>
           <div className="mb-3 position-relative">
@@ -110,19 +127,34 @@ export const Login = () => {
               )}
             </button>
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+          <button
+            type="submit"
+            className="btn w-100"
+            style={{
+              background: "#6e8efb",
+              color: "#fff",
+              borderRadius: "8px",
+              padding: "10px",
+              fontWeight: "bold",
+              transition: "0.3s ease",
+            }}
+            onMouseOver={(e) =>
+              (e.target.style.background = "#a777e3")
+            }
+            onMouseOut={(e) => (e.target.style.background = "#6e8efb")}
+          >
             Ingresar
           </button>
         </form>
-        {error && <p className="text-danger mt-3">{error}</p>}
+
+        {error && <p className="text-danger mt-3 text-center">{error}</p>}
 
         <p className="text-center mt-3">
-          ¿No tienes cuenta?{" "}
+          You don't have an account?{" "}
           <a href="/register" className="text-primary text-decoration-none">
-            Regístrate
+            Register
           </a>
         </p>
-
       </div>
     </div>
   );

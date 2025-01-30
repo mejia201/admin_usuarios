@@ -18,7 +18,7 @@ export const Register = () => {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Las contraseñas no coinciden.",
+        text: "Passwords do not match.",
       });
       return;
     }
@@ -35,13 +35,13 @@ export const Register = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al registrarse");
+        throw new Error(data.message || "Error");
       }
 
       Swal.fire({
         icon: "success",
-        title: "Registro exitoso",
-        text: "Tu cuenta ha sido creada. Ahora puedes iniciar sesión.",
+        title: "Successful registration",
+        text: "Your account has been created. You can now log in.",
       });
 
       navigate("/login");
@@ -63,17 +63,32 @@ export const Register = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow-lg" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4">Register</h3>
+    
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{
+        background: "linear-gradient(135deg, #6e8efb, #a777e3)",
+        height: "100vh",
+      }}
+    >
+      <div
+        className="card p-4 shadow-lg"
+        style={{
+          width: "400px",
+          borderRadius: "15px",
+          background: "#fff",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        <h3 className="text-center mb-4" style={{ color: "#6e8efb" }}>Register</h3>
         <form onSubmit={handleRegister}>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Nombre</label>
+            <label htmlFor="name" className="form-label">Name</label>
             <input
               type="text"
               className="form-control"
               id="name"
-              placeholder="Ingresa tu nombre"
+              placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -84,7 +99,7 @@ export const Register = () => {
               type="email"
               className="form-control"
               id="email"
-              placeholder="Ingresa tu email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -95,7 +110,7 @@ export const Register = () => {
               type={showPassword ? "text" : "password"}
               className="form-control"
               id="password"
-              placeholder="Ingresa tu contraseña"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -126,7 +141,7 @@ export const Register = () => {
               type={showConfirmPassword ? "text" : "password"}
               className="form-control"
               id="confirmPassword"
-              placeholder="Confirma tu contraseña"
+              placeholder="Confirm your password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -143,6 +158,7 @@ export const Register = () => {
                 padding: 0,
                 cursor: "pointer",
               }}
+              
             >
               {showConfirmPassword ? (
                 <i className="bi bi-eye-slash" aria-hidden="true"></i>
@@ -151,14 +167,29 @@ export const Register = () => {
               )}
             </button>
           </div>
-          <button type="submit" className="btn btn-primary w-100">
-            Registrarse
+          <button
+            type="submit"
+            className="btn w-100"
+            style={{
+              background: "#6e8efb",
+              color: "#fff",
+              borderRadius: "8px",
+              padding: "10px",
+              fontWeight: "bold",
+              transition: "0.3s ease",
+            }}
+            onMouseOver={(e) =>
+              (e.target.style.background = "#a777e3")
+            }
+            onMouseOut={(e) => (e.target.style.background = "#6e8efb")}
+          >
+            Register
           </button>
         </form>
         <p className="text-center mt-3">
-          ¿Ya tienes una cuenta?{" "}
+            Already have an account?{" "}
           <a href="/login" className="text-primary text-decoration-none">
-            Inicia sesión
+            Login
           </a>
         </p>
       </div>
