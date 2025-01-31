@@ -57,7 +57,7 @@ export const Stadistics = () => {
     labels: ["Daily", "Weekly", "Monthly"],
     datasets: [
       {
-        label: "Statistics",
+        label: "Users added",
         data: [statistics.daily, statistics.weekly, statistics.monthly],
         backgroundColor: [
           "rgba(75, 192, 192, 0.6)",
